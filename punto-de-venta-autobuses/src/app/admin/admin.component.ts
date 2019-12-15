@@ -23,6 +23,20 @@ export class AdminComponent implements OnInit {
   bus:any
 
   viajeObtenido: any
+
+  autobusObtenido: any
+
+  ocultarDiv:any = 0
+
+  ocultarDivBoleto: any = 0
+
+  boletosVendidos: any
+
+  viajeVendido: any
+
+  boletos:any
+
+  boletosAutobus: any
   constructor(private api: ApiService, private formBuilder: FormBuilder) {
     this.registrar_autobus = this.formBuilder.group({
       "clase": ["", Validators.required],
@@ -33,15 +47,6 @@ export class AdminComponent implements OnInit {
     this.registrar_boleto = this.formBuilder.group({
       'ciudad': [''],
     })
-
-    /*
-      table.integer('id_autobus').unsigned().references('id').inTable('autobuses');
-      table.integer('id_origen')
-      table.integer('id_destino')
-      table.integer('distancia')
-      table.integer('precio')
-      table.date('fecha_de_salida')
-    */
 
     this.registrar_viaje = this.formBuilder.group({
       'id_autobus':[''],
@@ -110,11 +115,25 @@ export class AdminComponent implements OnInit {
 
       this.api.actualizarViaje(this.viajeObtenido.id, this.viajeObtenido).subscribe(result =>{
         console.log(result)
+        this.ngOnInit()
       })
     })
+  }
 
-    this.ngOnInit()
-
+  hacerMantenimiento(id:any){
+    this.api.obtenerAutobus(id).subscribe(result =>{
+      this.autobusObtenido = result
+      if(this.autobusObtenido.mantenimiento == 0){
+        this.autobusObtenido.mantenimiento = 1
+      }else{
+        this.autobusObtenido.mantenimiento = 0
+      }
+  
+      this.api.actualizarAutobus(id, this.autobusObtenido).subscribe(result =>{
+        console.log(result)
+        this.ngOnInit()
+      })
+    })
   }
 
   registrarViaje(){
@@ -125,6 +144,53 @@ export class AdminComponent implements OnInit {
       console.log(this.registrar_viaje.value)
       this.api.registrarViaje(this.registrar_viaje.value).subscribe(result =>{
         console.log(result)
+        this.bus.ocupado = 1
+        this.api.actualizarAutobus(this.registrar_viaje.get('id_autobus').value, this.bus).subscribe(result =>{
+          console.log(result)
+          this.ngOnInit()
+        })
+      })
+
+    })
+  }
+
+  cerrar(){
+    this.ocultarDiv = 0
+  }
+
+  obtenerBoletosVendidos(id){
+    this.ocultarDiv = 1
+    this.api.obtenerBoletosVendidos({id_autobus: id}).subscribe(result =>{
+      console.log(result)
+      this.boletosVendidos = result
+      this.api.obtenerViaje(this.boletosVendidos.id_viaje).subscribe(result =>{
+        this.viajeVendido = result
+      })
+    })
+  }
+
+  obtenerTodoBoleto(id, id_viaje){
+    this.ocultarDivBoleto = 1
+    this.api.getBoletos({id_autobus: id, id_viaje: id_viaje}).subscribe(result =>{
+      console.log(result)
+      this.boletosAutobus = result
+    })
+  }
+
+  eliViaje(id:any, id_autobus:any){
+    console.log(id, id_autobus)
+    this.api.obtenerAutobus(id_autobus).subscribe(result =>{
+      console.log(result)
+      this.bus = result
+      this.api.eliminarViaje(id).subscribe(result =>{
+        console.log(result)
+        this.bus.ocupado = 0
+        this.api.actualizarAutobus(id_autobus, this.bus).subscribe(result =>{
+          console.log(result)
+          this.ngOnInit()
+        })
+      },error =>{
+        console.log(error)
       })
     })
   }

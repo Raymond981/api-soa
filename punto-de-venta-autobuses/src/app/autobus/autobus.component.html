@@ -1,64 +1,47 @@
-<div class="autobus container p-3 mx-auto">
-        <table class="mx-auto">
-                <tbody>
-                        <tr class="">
-                                <td><button class="button button-style" (click)="reservarBoleto(4)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">4</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(8)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">8</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(12)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">12</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(16)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">16</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(20)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">20</button></td>
-                        </tr>
-                        <tr>
-                                <td><button class="button button-style" (click)="reservarBoleto(3)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">3</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(7)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">7</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(11)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">11</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(15)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">15</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(19)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">19</button></td>
-                        </tr>
-                        <br><br>
-                        <tr>
-                                <td><button class="button button-style" (click)="reservarBoleto(2)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">2</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(6)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">6</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(10)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">10</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(14)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">14</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(18)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">18</button></td>
-                        </tr>
-                        <tr>
-                                <td><button class="button button-style" (click)="reservarBoleto(1)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">1</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(5)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">5</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(9)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">9</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(13)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">13</button></td>
-                                <td><button class="button button-style" (click)="reservarBoleto(17)" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg">17</button></td>
-                        </tr>
-                </tbody>
-        </table>
-        <!-- DivTable.com -->
+<div class="container pt-4 mx-auto">
+        <ul class="nav justify-content-center">
+                <a class="navbar-brand" href="#">
+                        <img src="../assets/ado_logo.png" width="114" height="40" class="d-inline-block align-top"
+                                alt="">
+                </a>
+                <li class="nav-item">
+                        <a class="nav-link active" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link" href="#">Nosotros</a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link" href="#">Políticas de privacidad</a>
+                </li>
+        </ul>
+
+        <h1 class="text-center">ELEGIR BOLETO</h1>
+        <div class="row styles">
+                <div class="col-sm-3" *ngFor="let boleto of boletos; let i = index">
+                        <button *ngIf="boleto.vendido == 0" class="button button-style"
+                                (click)="reservarBoleto(boleto.id)" data-toggle="modal"
+                                data-target=".bd-example-modal-lg">{{i+1}}</button>
+                        <button *ngIf="boleto.vendido == 1" class="button button-style2"
+                                (click)="reservarBoleto(boleto.id)" data-toggle="modal"
+                                data-target=".bd-example-modal-lg" [disabled]="boleto.vendido">{{i+1}}</button>
+                </div>
+        </div>
+        <br><br>
+        <div class="row styles2">
+                <div class="col-md-4">
+                        <div><button class="button button-style">X</button> <b class="text-center">Botón libre.</b>
+                        </div>
+                        <div><button class="button button-style2">X</button> <b class="text-center">Botón ocupado.</b>
+                        </div>
+
+                </div>
+        </div>
 
         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                                <div class="container">
+                                <div class="container" *ngIf="procesoPago == 0">
                                         <form [formGroup]="registrar_boleto">
                                                 <div class="form-group">
                                                         <label for="formGroupExampleInput">Nombre: </label>
@@ -76,21 +59,32 @@
                                                 <div class="form-group">
                                                         <label for="formGroupExampleInput">Tipo de boleto: </label>
                                                         <select formControlName="tipo" class="form-control">
-                                                                <option [value]="tipo"
-                                                                        *ngFor="let tipo of tipos">
+                                                                <option [value]="tipo" *ngFor="let tipo of tipos">
                                                                         {{tipo}}</option>
                                                         </select>
                                                 </div>
 
-                                                <div id="card-element"></div>
 
-                                                <button class="btn btn-lg btn-block" (click)="comprarBoleto()"
-                                                        data-dismiss="modal">Comprar boleto</button>
+
+                                                <div id="card-element"></div>
+                                                <br>
+                                                <button class="btn btn-lg btn-block" (click)="comprarBoleto()">Comprar boleto</button>
+                                                <br>
                                         </form>
                                 </div>
+                                
+                                <div class="container"  *ngIf="procesoPago == 1">
+                                        <h1 class="text-center">PAGO COMPLETADO</h1>
+                                        <h3 class="text-center">{{ciudades[viaje.id_origen-1].ciudad}} - {{ciudades[viaje.id_destino-1].ciudad}}</h3>
+                                        <b class="text-center">Nombre: </b><p>{{datosDePago.nombre}}</p><br>
+                                        <b class="text-center">Asiento: </b><p>{{datosDePago.asiento}}</p><br>
+                                        <b class="text-center">Tipo de boleto: </b><p>{{datosDePago.tipo}}</p><br>
+                                        <b class="text-center">Clase: </b><p>{{list_autobuses[datosDePago.id_autobus-1].clase}}</p><br>
+                                        <button class="btn btn-lg btn-block" (click)="redirigir()" data-dismiss="modal" >Completo</button>
+                                        <br>
+
+                                </div>
                         </div>
-
-
                 </div>
         </div>
 </div>

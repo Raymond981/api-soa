@@ -7,6 +7,13 @@ export class FireService {
 
   constructor(private firestore: AngularFirestore) { }
 
+  
+  searchEmail(email){
+    return this.firestore.collection('/users',ref => ref.where('correo', '>=', email)
+      .where('correo', '<=', email + '\uf8ff'))
+      .snapshotChanges()  }
+
+
   getViajes() {
     return this.firestore.collection('viajes').snapshotChanges();
   }

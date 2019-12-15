@@ -7,8 +7,16 @@ import { HttpClient } from '@angular/common/http';
 export class ApiService {
   api: string = 'http://localhost:3333'
 
-  apiPagos: string = 'http://localhost:3000'
+  apiPagos: string = 'https://api-autobuses.herokuapp.com'
   constructor(private http: HttpClient) { }
+
+  obtenerBoletosVendidos(id:any){
+    return this.http.post(`${this.api}/api/boletosVendidos`, id)
+  }
+
+  obtenerViajePorAutobus(id:any){
+    return this.http.post(`${this.api}/api/viajesPorAutobus`, id)
+  }
 
   obtenerAutobus(id:any){
     return this.http.get(`${this.api}/api/autobuses/${id}`)
@@ -68,6 +76,14 @@ export class ApiService {
 
   actualizarBoleto(id:any, data:any){
     return this.http.put(`${this.api}/api/boletos/${id}`, data)
+  }
+
+  actualizarAutobus(id:any, data:any){
+    return this.http.put(`${this.api}/api/autobuses/${id}`, data)
+  }
+
+  eliminarViaje(id:any){
+    return this.http.delete(`${this.api}/api/viajes/${id}`)
   }
 
 }

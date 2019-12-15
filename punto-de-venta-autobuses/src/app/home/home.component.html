@@ -4,7 +4,7 @@
             <img src="../assets/ado_logo.png" width="114" height="40" class="d-inline-block align-top" alt="">
         </a>
         <li class="nav-item">
-            <a class="nav-link active" href="#">Inicio</a>
+            <a class="nav-link" href="#">Inicio</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Nosotros</a>
@@ -83,7 +83,7 @@
                                     <td>{{viajes.hora_de_salida}}</td>
                                     <td>$ {{viajes.precio}}</td>
                                     <td><button class="btn btn-success"
-                                            (click)="comprarBoleto(viajes.id_autobus, viajes.id)">Comprar</button></td>
+                                            (click)="comprarBoleto(viajes.id_autobus, viajes.id)" data-dismiss="modal">Comprar</button></td>
                                 </tr>
                             </tbody>
                         </table>
