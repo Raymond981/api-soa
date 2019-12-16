@@ -8,9 +8,11 @@ import base64
 import os
 import cv2
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 
 UPLOAD_FOLDER = ''
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def targetData():
@@ -57,6 +59,9 @@ def get_model():
     loaded_model.load_weights("model.h5")
     print("Model CARGADO!")
 
+@app.route('/hola', methods=["GET"])
+def hola():
+    return "hola"
 
 @app.route('/predecir', methods=["POST"])
 def predecir():
@@ -67,4 +72,4 @@ def predecir():
     get_model()
     print (loaded_model.predict(targetData()).round())
 
-    return filename
+    return "Done"
